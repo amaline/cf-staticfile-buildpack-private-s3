@@ -1,0 +1,23 @@
+---
+language: staticfile
+exclude_files:
+- ".git/"
+- ".gitignore"
+- ".gitmodules"
+- ".rspec"
+- cf_spec/
+- log/
+- test/
+- buildpack-packager/
+- staticfile_buildpack-*v*.zip
+url_to_dependency_map:
+- match: nginx.tgz
+  name: nginx
+  version: %NGINX_VERSION%
+dependencies:
+- name: nginx
+  version: %NGINX_VERSION%
+  uri: %NGINX_URL%
+  md5: %NGINX_MD5%
+  cf_stacks:
+  - cflinuxfs2
