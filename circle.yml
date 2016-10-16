@@ -1,0 +1,27 @@
+machine:
+  environment:
+    NGINX_URL: https://github.com/amaline/s3-proxy-nginx/releases/download/v0.6/nginx-s3.tgz
+    NGINX_VERSION: 1.11.4
+    NGINX_MD5: 97820165caf1e717ecd503daab71db33
+    GITHUB_PROJECT: amaline/cf-staticfile-buildpack-private-s3
+    PROJECT_REPOSITORY: github.com/amaline/cf-staticfile-buildpack-private-s3.git
+    GITHUB_RELEASE: v0.1
+    ARTIFACT_NAME: staticfile_buildpack_.zip
+
+dependencies:
+  pre:
+    - sudo apt-get -y install curl build-essential libpcre3 libpcre3-dev zlib1g-dev libssl-dev jq
+    - curl -L "https://cli.run.pivotal.io/stable?release=linux64-binary&source=github" | tar -zx
+    - sudo mv cf /usr/local/bin
+    - cf -v
+    - git clone https://github.com/cloudfoundry/staticfile-buildpack.git
+    - git submodule update --init
+    - perl -pi -e "s@%NGINX_VERSION%@${NGINX_VERSION}@" -e "s@%NGINX_MD5%@${NGINX_MD5}@" -e "s@%NGINX_URL%@${NGINX_URL}@" manifest.yml
+    - BUNDLE_GEMFILE=cf.Gemfile bundle
+    - BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
+    
+deployment:
+  hub:
+    branch: master
+    commands:
+       - ./deploy.sh
