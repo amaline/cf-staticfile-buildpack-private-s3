@@ -1,6 +1,6 @@
 machine:
   ruby:
-    version: rbx-2.3.1
+    version: 2.3.1
   environment:
     NGINX_URL: https://github.com/amaline/s3-proxy-nginx/releases/download/v0.6/nginx-s3.tgz
     NGINX_VERSION: 1.11.4
