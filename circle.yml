@@ -15,10 +15,11 @@ dependencies:
     - sudo mv cf /usr/local/bin
     - cf -v
     - git clone https://github.com/cloudfoundry/staticfile-buildpack.git
-    - git submodule update --init
-    - perl -pi -e "s@%NGINX_VERSION%@${NGINX_VERSION}@" -e "s@%NGINX_MD5%@${NGINX_MD5}@" -e "s@%NGINX_URL%@${NGINX_URL}@" manifest.yml
-    - BUNDLE_GEMFILE=cf.Gemfile bundle
-    - BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
+    - cp custom-manifest.yml staticfile-buildpack/manifest.yml 
+    - cd staticfile-buildpack && git submodule update --init
+    - cd staticfile-buildpack && perl -pi -e "s@%NGINX_VERSION%@${NGINX_VERSION}@" -e "s@%NGINX_MD5%@${NGINX_MD5}@" -e "s@%NGINX_URL%@${NGINX_URL}@" manifest.yml
+    - cd staticfile-buildpack && BUNDLE_GEMFILE=cf.Gemfile bundle
+    - cd staticfile-buildpack && BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
     
 deployment:
   hub:
