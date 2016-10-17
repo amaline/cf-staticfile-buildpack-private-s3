@@ -8,7 +8,7 @@ machine:
     GITHUB_PROJECT: amaline/cf-staticfile-buildpack-private-s3
     PROJECT_REPOSITORY: github.com/amaline/cf-staticfile-buildpack-private-s3.git
     GITHUB_RELEASE: v0.1
-    ARTIFACT_NAME: staticfile_buildpack_.zip
+    ARTIFACT_NAME: staticfile_buildpack-cached-VERSION.zip
 
 dependencies:
   pre:
@@ -22,6 +22,7 @@ dependencies:
     - cd staticfile-buildpack && perl -pi -e "s@%NGINX_VERSION%@${NGINX_VERSION}@; s@%NGINX_MD5%@${NGINX_MD5}@; s@%NGINX_URL%@${NGINX_URL}@" manifest.yml
     - cd staticfile-buildpack && BUNDLE_GEMFILE=cf.Gemfile bundle
     - cd staticfile-buildpack && BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
+    - cd staticfile-buildpack && mv staticfile_buildpack-cached-*.zip $CIRCLE_ARTIFACTS
     
 deployment:
   hub:
