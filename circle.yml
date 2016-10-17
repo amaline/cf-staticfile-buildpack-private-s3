@@ -8,8 +8,8 @@ machine:
     REPOSITORY: staticfile-buildpack
     GITHUB_PROJECT: amaline/cf-staticfile-buildpack-private-s3
     PROJECT_REPOSITORY: github.com/amaline/cf-staticfile-buildpack-private-s3.git
-    GITHUB_RELEASE: v0.3
-    ARTIFACT_NAME: staticfile_buildpack-cached-VERSION.zip
+    GITHUB_RELEASE: v0.4
+    ARTIFACT_NAME: staticfile_buildpack-cached-vVERSION.zip
 
 dependencies:
   pre:
