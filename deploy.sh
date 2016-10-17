@@ -1,7 +1,9 @@
 #!/bin/bash
 #
 #   PROGRAM: deploy.sh
-#   PURPOSE: Creates a github release and uploads nginx binary in gzip tar format to github
+#   PURPOSE: Creates a github release and uploads nginx binary in gzip tar format to github.  This version modified to 
+#            build the artifact name using the VERSION file as input.
+#
 #   EXIT CODES:
 #               128 - repository tag already exists.  update circle.yml with new version number.
 #               100 - no release ID was returned from github when release creation was attempted.
@@ -13,7 +15,16 @@ echo "GITHUB_PROJECT    = $GITHUB_PROJECT"
 echo "GITHUB_RELEASE    = $GITHUB_RELEASE"
 echo "PROJECT_REPOSITORY= $PROJECT_REPOSITORY"
 echo "CIRCLE_ARTIFACTS  = $CIRCLE_ARTIFACTS"
+echo "REPOSITORY        = $REPOSITORY"
+
+VERSION=`cat $REPOSITORY/VERSION`
+echo "VERSION           = $VERSION"
+
+ARTIFACT_NAME=`echo $ARTIFACT_NAME|sed -e 's/VERSION/${VERSION}/'`
 echo "ARTIFACT_NAME     = $ARTIFACT_NAME"
+
+RELEASE_NAME="release ${GITHUB_RELEASE} for custom staticfile buildpack build"
+RELEASE_DESC=""
 
 echo "Exiting on any error"
 set -e
@@ -25,18 +36,16 @@ git tag ${GITHUB_RELEASE}
 echo "Push tag to github repository ${GITHUB_PROJECT}"
 git push https://${GITHUB_TOKEN}@${PROJECT_REPOSITORY} --tags
 
-echo "Sleep 15 seconds for api to recognize tag because eventual consistancy I think... [race condition]"
-sleep 15
+#echo "Sleep 15 seconds for api to recognize tag because eventual consistancy I think... [race condition]"
+#sleep 15
 
 echo "Creating release..."
 
 echo "  build create release json"
-echo -e "{\n\"tag_name\": \"${GITHUB_RELEASE}\",\n\"target_commitish\": \"master\",\n\"name\": \"release ${GITHUB_RELEASE} for custom nginx build\",\n\"body\": \"release ${GITHUB_RELEASE} for custom nginx build for cloud foundry s3 proxy\",\n\"draft\": false,\n\"prerelease\": false\n}" > json.json
+echo -e "{\n\"tag_name\": \"${GITHUB_RELEASE}\",\n\"target_commitish\": \"master\",\n\"name\": \"${RELEASE_NAME}\",\n\"body\": \"${RELEASE_DESC}\",\n\"draft\": false,\n\"prerelease\": false\n}" > json.json
 
 echo "  issuing command to github to create release"
 curl -# -XPOST -H 'Content-Type:application/json' -H 'Accept:application/json' --data-binary @json.json https://api.github.com/repos/${GITHUB_PROJECT}/releases?access_token=${GITHUB_TOKEN} -o response.json
-
-
 
 echo "  pulling release id from response"
 RELEASE_ID=`cat response.json | jq '.id'`
