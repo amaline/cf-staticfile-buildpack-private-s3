@@ -17,14 +17,14 @@ echo "PROJECT_REPOSITORY= $PROJECT_REPOSITORY"
 echo "CIRCLE_ARTIFACTS  = $CIRCLE_ARTIFACTS"
 echo "REPOSITORY        = $REPOSITORY"
 
-VERSION=`cat $REPOSITORY/VERSION`
+export VERSION=`cat $REPOSITORY/VERSION`
 echo "VERSION           = $VERSION"
 
-ARTIFACT_NAME=`echo $ARTIFACT_NAME|sed -e 's/VERSION/${VERSION}/'`
+export ARTIFACT_NAME=`echo $ARTIFACT_NAME|sed -e 's/VERSION/${VERSION}/'`
 echo "ARTIFACT_NAME     = $ARTIFACT_NAME"
 
-RELEASE_NAME="release ${GITHUB_RELEASE} for custom staticfile buildpack build"
-RELEASE_DESC=""
+export RELEASE_NAME="Release ${GITHUB_RELEASE} for custom staticfile buildpack build"
+export RELEASE_DESC="Cloud Foundry staticfile buildpack with a custom version of nginx that includes the aws authentication module for accessing private S3 buckets."
 
 echo "Exiting on any error"
 set -e
