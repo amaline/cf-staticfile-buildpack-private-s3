@@ -20,7 +20,7 @@ echo "REPOSITORY        = $REPOSITORY"
 export VERSION=`cat $REPOSITORY/VERSION`
 echo "VERSION           = $VERSION"
 
-export ARTIFACT_NAME=`echo $ARTIFACT_NAME|sed -e 's/VERSION/${VERSION}/'`
+export ARTIFACT_NAME=`echo $ARTIFACT_NAME|sed -e "s/VERSION/${VERSION}/"`
 echo "ARTIFACT_NAME     = $ARTIFACT_NAME"
 
 export RELEASE_NAME="Release ${GITHUB_RELEASE} for custom staticfile buildpack build"
