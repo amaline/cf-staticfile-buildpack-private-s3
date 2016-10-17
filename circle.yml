@@ -5,7 +5,7 @@ machine:
     NGINX_URL: https://github.com/amaline/s3-proxy-nginx/releases/download/v0.6/nginx-s3.tgz
     NGINX_VERSION: 1.11.4
     NGINX_MD5: 0b2dfaf93110b53f191671f9105e5fed
-    REPOSITORY: cf-staticfile-buildpack-private-s3
+    REPOSITORY: staticfile-buildpack
     GITHUB_PROJECT: amaline/cf-staticfile-buildpack-private-s3
     PROJECT_REPOSITORY: github.com/amaline/cf-staticfile-buildpack-private-s3.git
     GITHUB_RELEASE: v0.1
